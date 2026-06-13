@@ -1,9 +1,9 @@
 # Algoritmo de Scouting Híbrido Basado en Modelos Psicosociales
 
-Este repositorio contiene la arquitectura base para implementar un sistema de **Scouting de Fútbol Avanzado**. A diferencia de los modelos tradicionales, esta metodología integra variables estadísticas de rendimiento en cancha con perfiles psicométricos y conductuales del jugador.
+El repositorio contiene la arquitectura base en la implementación un sistema de **Scouting de Fútbol Avanzado**. A diferencia de los modelos tradicionales, esta metodología integra variables estadísticas de rendimiento en cancha con perfiles psicométricos y conductuales del jugador.
 
 ## 🚀 Innovación del Modelo
-El sistema evalúa el riesgo de fichaje analizando:
+El sistema evalúa el riesgo de fichajes analizando, algunos parametros como:
 - **Resiliencia Lingüística:** Capacidad de respuesta ante la frustración.
 - **Ecosistema de Desarraigo:** Redes de contención geográfica necesarias para el éxito del atleta.
 - **Madurez Rol-Dependiente:** Impacto de variables socio-familiares (como la paternidad) en posiciones tácticas de alta responsabilidad.
