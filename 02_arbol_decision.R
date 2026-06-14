@@ -11,6 +11,10 @@ library(rpart.plot)
 
 # 1. Base de datos completa (Incluímos la columna de decisión histórica)
 # Recordemos que como analista puedes agegar las metricas que desees!
+
+# NOTA PARA EL USUARIO: Este dataset de entrenamiento es un ejemplo simulado. 
+# En la práctica, debe modificarse obligatoriamente según el historial de fichajes 
+# pasados del club, su presupuesto y la filosofía de juego/táctica del cuerpo técnico.
 dataset_entrenamiento <- data.frame(
   goles_poisson     = c(0.42, 0.12, 0.35, 0.05, 0.18, 0.50, 0.10, 0.30),
   resiliencia_score = c(85, 90, 30, 45, 70, 40, 88, 92),
