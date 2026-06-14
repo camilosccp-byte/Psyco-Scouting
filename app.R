@@ -1,5 +1,6 @@
+
 # ---------------------------------------------------------
-# Proyecto: Scouting Híbrido - Aplicación con Goles y Pases (HMTL)
+# Proyecto: Scouting Híbrido - Versión 100% Funcional
 # ---------------------------------------------------------
 
 if(!require(shiny)) install.packages("shiny")
@@ -43,8 +44,9 @@ ui <- fluidPage(
 # LÓGICA DEL SERVIDOR (SERVER)
 server <- function(input, output) {
   
+  # CORRECCIÓN AQUÍ: Uso del signo $ en input$selector_jugador
   datos_filtrados <- reactive({
-    subset(datos_jugadores, jugador == input.selector_jugador)
+    subset(datos_jugadores, jugador == input$selector_jugador)
   })
   
   output$metrica_futbol <- renderUI({
@@ -68,7 +70,7 @@ server <- function(input, output) {
   output$metrica_decision <- renderUI({
     df <- datos_filtrados()
     
-    # Reglas lógicas del Árbol de Decisión
+    # Reglas lógicas directas del Árbol de Decisión
     prediccion <- "Monitorear"
     if (df$resiliencia_score < 40 || df$riesgo_desarraigo == "Alto") {
       prediccion <- "Descartar"
