@@ -1,6 +1,6 @@
 ---
 title: "Ficha Técnica de Scouting Híbrido"
-output: pdf_document
+output: html_document
 params:
   jugador: "Desconocido"
   poisson: "0%"
