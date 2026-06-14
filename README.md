@@ -1,21 +1,64 @@
-# Algoritmo de Scouting Híbrido Basado en Modelos Psicosociales
+# 📊 Algoritmo de Scouting Híbrido: Rendimiento + Perfil Psicosocial
 
-El repositorio contiene la arquitectura base en la implementación un sistema de **Scouting de Fútbol Avanzado**. A diferencia de los modelos tradicionales, esta metodología integra variables estadísticas de rendimiento en cancha con perfiles psicométricos y conductuales del jugador.
+Este repositorio contiene la arquitectura de software avanzada para un sistema de **Scouting Inteligente de Fútbol Profesional** desarrollado en R. 
 
-## 🚀 Innovación del Modelo
-El sistema evalúa el riesgo de fichajes analizando, algunos parametros como:
-- **Resiliencia Lingüística:** Capacidad de respuesta ante la frustración.
-- **Ecosistema de Desarraigo:** Redes de contención geográfica necesarias para el éxito del atleta.
-- **Madurez Rol-Dependiente:** Impacto de variables socio-familiares (como la paternidad) en posiciones tácticas de alta responsabilidad.
+A diferencia de los modelos tradicionales de la industria que se limitan a analizar eventos con el balón, esta metodología pionera integra métricas de rendimiento en campo con variables del entorno psicométrico y conductual del atleta para mitigar el riesgo financiero y deportivo en los fichajes.
 
-## 🛠️ Estructura del Código
-1. `01_imputacion_datos.R`: Manejo de datos faltantes (NA) en perfiles psicológicos mediante Imputación por Bosques Aleatorios (`mice`).
-2. `02_arbol_decision.R`: Clasificación predictiva y toma de decisiones automatizada (`rpart`) cruzando fútbol y psicología.
+---
 
-## 📋 Requisitos
-Para ejecutar estos scripts en R, necesitas instalar:
+## 🌐 Plataforma Interactiva en Producción (R Shiny)
+
+El modelo cuenta con una aplicación web completamente funcional desplegada en la nube para uso de la junta directiva y el cuerpo técnico. 
+
+👉 **[Acceder al Panel de Scouting en Vivo](https://mi-analisis-premier.shinyapps.io/scouting_app/)** *(Nota: Reemplaza esta URL por tu enlace real de shinyapps.io)*
+
+### Características del Panel Ejecutivo:
+- **Simulación Reactiva:** Permite seleccionar candidatos del menú y recalcular instantáneamente sus indicadores técnicos y humanos.
+- **Alertas Semafóricas:** Clasificación visual automática (Verde/Amarillo/Rojo) del nivel de riesgo psicosocial del futbolista.
+- **Módulo de Exportación:** Incluye un botón automatizado para generar y descargar fichas técnicas completas en formato PDF ejecutivo de forma nativa.
+
+---
+
+## 🚀 Innovación Metodológica: Variables Analizadas
+
+El sistema evalúa la viabilidad del fichaje cruzando dos dimensiones críticas:
+
+1. **Métricas de Cancha (Eventing Analytics):**
+   - *Frecuencia de Gol (Distribución de Poisson):* Proyección analítica de efectividad ofensiva en base a datos históricos.
+   - *Volumen de Juego:* Normalización y análisis de pases completados por cada 90 minutos de juego.
+
+2. **Métricas Humanas y de Adaptación (Psicosocial Analytics):**
+   - *Resiliencia Conductual:* Capacidad de respuesta y tolerancia ante escenarios de frustración y alta presión.
+   - *Ecosistema de Desarraigo:* Evaluación predictiva de redes de contención geográfica necesarias para el éxito del atleta en un país extranjero (necesidad de un compañero de nacionalidad coadyuvante).
+   - *Madurez Rol-Dependiente:* Impacto de variables socio-familiares (como la paternidad) para la asignación de posiciones tácticas de alta responsabilidad.
+
+---
+
+## 🛠️ Arquitectura de Código del Repositorio
+
+El flujo del proyecto está desacoplado en módulos estratégicos:
+
+- **`00_calculo_eventing.R`:** Simulación del procesamiento inicial de datos crudos (*Eventing*) utilizando distribuciones de Poisson y Bernoulli, automatizando la exportación hacia bases de datos compatibles con Excel (`.csv`).
+- **`01_imputacion_datos.R`:** Módulo de Inteligencia Artificial que soluciona el problema de los perfiles psicológicos vacíos en ligas lejanas mediante **Imputación por Bosques Aleatorios (`mice`)**, prediciendo variables conductuales en base a gemelos estadísticos en la cancha.
+- **`02_arbol_decision.R`:** Árbol de clasificación lógica que procesa el pipeline completo y emite la recomendación definitiva del sistema: *Fichar, Monitorear o Descartar*.
+- **`app.R`:** Código fuente de la interfaz gráfica y servidor web en **R Shiny** con motor de renderizado PDF integrado (`pagedown`).
+
+---
+
+## 📋 Requisitos e Instalación
+
+Para clonar este repositorio y ejecutar la suite analítica completa o la aplicación localmente en RStudio, instale las dependencias requeridas ejecutando:
+
 ```R
-install.packages(c("mice", "rpart", "rpart.plot"))
+install.packages(c("shiny", "shinythemes", "pagedown", "mice", "rpart", "dplyr"))
 ```
+
+Ejecución de la app local:
+```R
+shiny::runApp()
+```
+
+---
+*Desarrollado como una solución de Sports Analytics de Vanguardia para la Optimización del Mercado de Fichajes.*
 
 
