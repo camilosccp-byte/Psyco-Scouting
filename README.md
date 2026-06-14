@@ -1,4 +1,4 @@
-📊 Algoritmo de Scouting Híbrido: Rendimiento + Perfil Psicosocial
+## 📊 Algoritmo de Scouting Híbrido: Rendimiento + Perfil Psicosocial
 
 Este repositorio contiene la arquitectura de software avanzada para un sistema de **Scouting Inteligente de Fútbol Profesional** desarrollado en R. 
 
