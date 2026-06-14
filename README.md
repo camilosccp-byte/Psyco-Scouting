@@ -1,25 +1,25 @@
-# 📊 Algoritmo de Scouting Híbrido: Rendimiento + Perfil Psicosocial
+📊 Algoritmo de Scouting Híbrido: Rendimiento + Perfil Psicosocial
 
 Este repositorio contiene la arquitectura de software avanzada para un sistema de **Scouting Inteligente de Fútbol Profesional** desarrollado en R. 
 
-A diferencia de los modelos tradicionales de la industria que se limitan a analizar eventos con el balón, esta metodología pionera integra métricas de rendimiento en campo con variables del entorno psicométrico y conductual del atleta para mitigar el riesgo financiero y deportivo en los fichajes.
+A diferencia de los modelos tradicionales de la industria que se limitan a analizar eventos con el balón, esta metodología pionera integra y agrega métricas de rendimiento en campo con variables del entorno psicométrico y conductual del atleta para mitigar el riesgo financiero y deportivo en los fichajes.
 
 ---
 
-## 🌐 Plataforma Interactiva en Producción (R Shiny)
+🌐 Plataforma Interactiva en Producción (R Shiny)
 
 El modelo cuenta con una aplicación web completamente funcional desplegada en la nube para uso de la junta directiva y el cuerpo técnico. 
 
-👉 **[Acceder al Panel de Scouting en Vivo](https://mi-analisis-premier.shinyapps.io/scouting_app/)** *(Nota: Reemplaza esta URL por tu enlace real de shinyapps.io)*
+👉 **[Acceder al Panel de Scouting en Vivo](https://mi-analisis-premier.shinyapps.io/scouting_app/)** 
 
-### Características del Panel Ejecutivo:
+Características del Panel Ejecutivo:
 - **Simulación Reactiva:** Permite seleccionar candidatos del menú y recalcular instantáneamente sus indicadores técnicos y humanos.
 - **Alertas Semafóricas:** Clasificación visual automática (Verde/Amarillo/Rojo) del nivel de riesgo psicosocial del futbolista.
 - **Módulo de Exportación:** Incluye un botón automatizado para generar y descargar fichas técnicas completas en formato PDF ejecutivo de forma nativa.
 
 ---
 
-## 🚀 Innovación Metodológica: Variables Analizadas
+🚀 Innovación Metodológica: Variables Analizadas
 
 El sistema evalúa la viabilidad del fichaje cruzando dos dimensiones críticas:
 
@@ -34,7 +34,7 @@ El sistema evalúa la viabilidad del fichaje cruzando dos dimensiones críticas:
 
 ---
 
-## 🛠️ Arquitectura de Código del Repositorio
+🛠️ Arquitectura de Código del Repositorio
 
 El flujo del proyecto está desacoplado en módulos estratégicos:
 
@@ -45,7 +45,7 @@ El flujo del proyecto está desacoplado en módulos estratégicos:
 
 ---
 
-## 📋 Requisitos e Instalación
+📋 Requisitos e Instalación
 
 Para clonar este repositorio y ejecutar la suite analítica completa o la aplicación localmente en RStudio, instale las dependencias requeridas ejecutando:
 
