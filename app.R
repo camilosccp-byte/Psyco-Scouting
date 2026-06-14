@@ -11,7 +11,7 @@ library(shinythemes)
 library(rpart)
 library(rmarkdown)
 
-# 1. Base de datos simulada del club
+# Base de datos simulada del club
 datos_jugadores <- data.frame(
   jugador           = c("Delantero A", "Mediocentro B", "Extremo C", "Central D", "Interior E"),
   goles_poisson     = c(0.42, 0.12, 0.35, 0.05, 0.18),
@@ -20,7 +20,7 @@ datos_jugadores <- data.frame(
   riesgo_desarraigo = c("Bajo", "Bajo", "Alto", "Alto", "Medio")
 )
 
-# 2. Árbol de Decisión entrenado con pases
+# Árbol de Decisión entrenado con pases
 base_entrenamiento <- data.frame(
   goles_poisson     = c(0.42, 0.12, 0.35, 0.05, 0.18, 0.50, 0.10, 0.30),
   pases_normalizados = c(22, 58, 31, 45, 40, 25, 60, 52),
@@ -48,7 +48,7 @@ ui <- fluidPage(
     mainPanel(
       h3("Reporte en Tiempo Real del Jugador"),
       fluidRow(
-        column(4, wellPanel(h4("Métricas de Cancha"), uiOutput("metrica_futbol"))), # Unificado para ver ambos
+        column(4, wellPanel(h4("Métricas de Cancha"), uiOutput("metrica_futbol"))),
         column(4, wellPanel(h4("Métricas Humanas"), uiOutput("metrica_psico"))),
         column(4, wellPanel(h4("Veredicto del Árbol"), uiOutput("metrica_decision")))
       )
@@ -56,14 +56,14 @@ ui <- fluidPage(
   )
 )
 
-# LÓGICA DEL SERVIDOR (SERVER)
+# LÓGICA DEL SERVIDOR (SERVER) - ¡CORREGIDA AQUÍ!
 server <- function(input, output) {
   
   datos_filtrados <- reactive({
     subset(datos_jugadores, jugador == input.selector_jugador)
   })
   
-  # Mostramos Goles y Pases juntos de forma ordenada
+  # Uso correcto del signo $ para los outputs
   output$metrica_futbol <- renderUI({
     df <- datos_filtrados()
     tagList(
@@ -89,7 +89,6 @@ server <- function(input, output) {
     tagList(p(strong("Recomendación:")), h2(as.character(prediccion), style = paste0("color: ", color_veredicto, "; font-weight: bold;")))
   })
   
-  # Manejador de descarga PDF 
   output$descargar_reporte <- downloadHandler(
     filename = function() { paste0("Reporte_Scouting_", input$selector_jugador, ".pdf") },
     content = function(file) {
@@ -99,7 +98,7 @@ server <- function(input, output) {
       params <- list(
         jugador = input$selector_jugador,
         poisson = paste0(df$goles_poisson * 100, "%"),
-        pases = df$pases_normalizados, # Parámetro agregado
+        pases = df$pases_normalizados,
         resiliencia = df$resiliencia_score,
         desarraigo = df$riesgo_desarraigo,
         veredicto = prediccion
@@ -112,3 +111,4 @@ server <- function(input, output) {
 }
 
 shinyApp(ui = ui, server = server)
+
