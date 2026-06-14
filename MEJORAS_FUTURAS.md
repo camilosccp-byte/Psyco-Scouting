@@ -18,5 +18,11 @@ Para las próximas versiones del sistema de **Scouting Híbrido**, el ecosistema
 - **Objetivo:** Tasar de forma automatizada a jugadores de ligas secundarias.
 - **Fundamento:** Modelos de regresión (XGBoost / Random Forest) que cruzarán las métricas de *Eventing* con los indicadores humanos para identificar "jugadores infravalorados" antes de que explote su precio de mercado, asumiendo una distribución normal en los errores de estimación.
 
+### 4. Telemetría Psicofisiológica en Situaciones de Alta Tensión (Algoritmo Spatial-Stress)
+- **Objetivo:** Cuantificar la resiliencia mental, la ansiedad y el foco neurocognitivo del jugador en momentos críticos del partido.
+- **Fundamento:** Se integrarán datos biométricos en tiempo real provenientes de los chalecos GPS (Frecuencia Cardíaca, Variabilidad de la Frecuencia Cardíaca - VFC y Ritmo Respiratorio). Mediante algoritmos de geocercas espaciales, el sistema identificará cuándo el jugador entra en zonas de alta presión (como el área penal o un mano a mano con el arquero). Al cruzar los datos, el modelo aislará el esfuerzo físico del desgaste emocional: si las pulsaciones y la frecuencia respiratoria se disparan mientras la velocidad del jugador es baja o nula, el sistema detectará un estado de estrés psicológico (pánico o bloqueo). Por el contrario, exhalaciones profundas y una VFC estable indicarán un estado de relajación y concentración óptima, ofreciendo un indicador clave sobre cómo reacciona la mente del atleta bajo presión.
+
+Esto será útil en un futuro, tambien para comprobar que el entrenamiento pre partido (o en entrenamiento) con coaching de técnicas de relajacion (mindfullness - yoga aplicada), son claves para lograr que el jugador este concentrado. Se integrará telemetría de wearables para medir la VFC y el ritmo respiratorio dentro de geocercas en el área penal ( o zonas de posibles perdidas o duelos que dejen expuesto al equipo: en general situaciones de alta tension psicológica), permitiendo cuantificar la resiliencia mental y ansiedad del jugador ante escenarios de alta tensión. El algoritmo Spatial-Stress correlacionará picos fisiológicos no mecánicos para identificar estados de pánico o foco neurocognitivo óptimo.
+
 ---
 *Este roadmap consolida la transformación del scouting deportivo en una herramienta de gestión de activos financieros de alta precisión.*
