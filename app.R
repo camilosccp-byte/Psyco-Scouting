@@ -4,11 +4,9 @@
 
 if(!require(shiny)) install.packages("shiny")
 if(!require(shinythemes)) install.packages("shinythemes")
-if(!require(rpart)) install.packages("rpart")
 if(!require(rmarkdown)) install.packages("rmarkdown")
 library(shiny)
 library(shinythemes)
-library(rpart)
 library(rmarkdown)
 
 # Base de datos simulada del club
@@ -20,17 +18,7 @@ datos_jugadores <- data.frame(
   riesgo_desarraigo = c("Bajo", "Bajo", "Alto", "Alto", "Medio")
 )
 
-# Árbol de Decisión entrenado
-base_entrenamiento <- data.frame(
-  goles_poisson     = c(0.42, 0.12, 0.35, 0.05, 0.18, 0.50, 0.10, 0.30),
-  pases_normalizados = c(22, 58, 31, 45, 40, 25, 60, 52),
-  resiliencia_score = c(85, 90, 30, 45, 70, 40, 88, 92),
-  riesgo_desarraigo = c("Bajo", "Bajo", "Alto", "Alto", "Medio", "Alto", "Bajo", "Bajo"),
-  decision_final    = c("Fichar", "Fichar", "Descartar", "Descartar", "Monitorear", "Descartar", "Monitorear", "Fichar")
-)
-modelo_arbol <- rpart(decision_final ~ goles_poisson + pases_normalizados + resiliencia_score + riesgo_desarraigo, 
-                      data = base_entrenamiento, method = "class")
-
+# INTERFAZ DE USUARIO (UI)
 ui <- fluidPage(
   theme = shinytheme("flatly"),
   titlePanel("📊 Panel de Scouting Híbrido: Rendimiento + Psicología"),
@@ -40,7 +28,6 @@ ui <- fluidPage(
       h4("Filtros de Selección"),
       selectInput("selector_jugador", "Selecciona un Candidato:", choices = datos_jugadores$jugador),
       hr(),
-      # Botón adaptado a Informe Digital
       downloadButton("descargar_reporte", "Generar Informe Digital", class = "btn-success"),
       p(style = "margin-top: 15px;", "Haga clic para exportar la ficha psicosocial completa en formato HTML.")
     ),
@@ -50,12 +37,13 @@ ui <- fluidPage(
       fluidRow(
         column(4, wellPanel(h4("Métricas de Cancha"), uiOutput("metrica_futbol"))),
         column(4, wellPanel(h4("Métricas Humanas"), uiOutput("metrica_psico"))),
-        column(4, wellPanel(h4("Veredicto del Árbol"), uiOutput("metrica_decision")))
+        column(4, wellPanel(h4("Veredicto del Algoritmo"), uiOutput("metrica_decision")))
       )
     )
   )
 )
 
+# LÓGICA DEL SERVIDOR (SERVER)
 server <- function(input, output) {
   
   datos_filtrados <- reactive({
@@ -82,16 +70,30 @@ server <- function(input, output) {
   
   output$metrica_decision <- renderUI({
     df <- datos_filtrados()
-    prediccion <- predict(modelo_arbol, newdata = df, type = "class")
-    color_veredicto <- switch(as.character(prediccion), "Fichar" = "#27ae60", "Monitorear" = "#f39c12", "Descartar" = "#c0392b")
-    tagList(p(strong("Recomendación:")), h2(as.character(prediccion), style = paste0("color: ", color_veredicto, "; font-weight: bold;")))
+    
+    # Reglas lógicas lógicas directas del Árbol de Decisión simulado
+    prediccion <- "Monitorear"
+    if (df$resiliencia_score < 40 || df$riesgo_desarraigo == "Alto") {
+      prediccion <- "Descartar"
+    } else if (df$resiliencia_score >= 80 && df$goles_poisson > 0.10) {
+      prediccion <- "Fichar"
+    }
+    
+    color_veredicto <- switch(prediccion, "Fichar" = "#27ae60", "Monitorear" = "#f39c12", "Descartar" = "#c0392b")
+    tagList(p(strong("Recomendación:")), h2(prediccion, style = paste0("color: ", color_veredicto, "; font-weight: bold;")))
   })
   
   output$descargar_reporte <- downloadHandler(
-    filename = function() { paste0("Reporte_Scouting_", input$selector_jugador, ".html") }, # Cambiado a .html
+    filename = function() { paste0("Reporte_Scouting_", input$selector_jugador, ".html") },
     content = function(file) {
       df <- datos_filtrados()
-      prediccion <- as.character(predict(modelo_arbol, newdata = df, type = "class"))
+      
+      prediccion <- "Monitorear"
+      if (df$resiliencia_score < 40 || df$riesgo_desarraigo == "Alto") {
+        prediccion <- "Descartar"
+      } else if (df$resiliencia_score >= 80 && df$goles_poisson > 0.10) {
+        prediccion <- "Fichar"
+      }
       
       params <- list(
         jugador = input$selector_jugador,
