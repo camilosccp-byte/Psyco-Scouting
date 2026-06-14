@@ -1,5 +1,5 @@
 # ---------------------------------------------------------
-# Proyecto: Scouting Híbrido - Aplicación con Goles y Pases
+# Proyecto: Scouting Híbrido - Aplicación con Goles y Pases (HMTL)
 # ---------------------------------------------------------
 
 if(!require(shiny)) install.packages("shiny")
@@ -20,7 +20,7 @@ datos_jugadores <- data.frame(
   riesgo_desarraigo = c("Bajo", "Bajo", "Alto", "Alto", "Medio")
 )
 
-# Árbol de Decisión entrenado con pases
+# Árbol de Decisión entrenado
 base_entrenamiento <- data.frame(
   goles_poisson     = c(0.42, 0.12, 0.35, 0.05, 0.18, 0.50, 0.10, 0.30),
   pases_normalizados = c(22, 58, 31, 45, 40, 25, 60, 52),
@@ -31,7 +31,6 @@ base_entrenamiento <- data.frame(
 modelo_arbol <- rpart(decision_final ~ goles_poisson + pases_normalizados + resiliencia_score + riesgo_desarraigo, 
                       data = base_entrenamiento, method = "class")
 
-# INTERFAZ DE USUARIO (UI)
 ui <- fluidPage(
   theme = shinytheme("flatly"),
   titlePanel("📊 Panel de Scouting Híbrido: Rendimiento + Psicología"),
@@ -41,8 +40,9 @@ ui <- fluidPage(
       h4("Filtros de Selección"),
       selectInput("selector_jugador", "Selecciona un Candidato:", choices = datos_jugadores$jugador),
       hr(),
-      downloadButton("descargar_reporte", "Generar Informe PDF", class = "btn-success"),
-      p(style = "margin-top: 15px;", "Haga clic para exportar la ficha psicosocial completa en formato PDF.")
+      # Botón adaptado a Informe Digital
+      downloadButton("descargar_reporte", "Generar Informe Digital", class = "btn-success"),
+      p(style = "margin-top: 15px;", "Haga clic para exportar la ficha psicosocial completa en formato HTML.")
     ),
     
     mainPanel(
@@ -56,14 +56,12 @@ ui <- fluidPage(
   )
 )
 
-# LÓGICA DEL SERVIDOR (SERVER) - ¡CORREGIDA AQUÍ!
 server <- function(input, output) {
   
   datos_filtrados <- reactive({
     subset(datos_jugadores, jugador == input.selector_jugador)
   })
   
-  # Uso correcto del signo $ para los outputs
   output$metrica_futbol <- renderUI({
     df <- datos_filtrados()
     tagList(
@@ -90,7 +88,7 @@ server <- function(input, output) {
   })
   
   output$descargar_reporte <- downloadHandler(
-    filename = function() { paste0("Reporte_Scouting_", input$selector_jugador, ".pdf") },
+    filename = function() { paste0("Reporte_Scouting_", input$selector_jugador, ".html") }, # Cambiado a .html
     content = function(file) {
       df <- datos_filtrados()
       prediccion <- as.character(predict(modelo_arbol, newdata = df, type = "class"))
@@ -111,4 +109,3 @@ server <- function(input, output) {
 }
 
 shinyApp(ui = ui, server = server)
-
