@@ -1,6 +1,6 @@
 # ---------------------------------------------------------
 # Proyecto: Scouting Híbrido (Módulo 0: Cálculo de Eventing)
-# Objetivo: Calcular Poisson/Bernoulli y exportar datos a Excel
+# Objetivo: Calcular Poisson/Bernoulli y exportar data a Excel
 # ---------------------------------------------------------
 
 # 1. Instalar librería para manejo de datos si no existe
