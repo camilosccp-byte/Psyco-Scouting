@@ -1,14 +1,11 @@
-
 # ---------------------------------------------------------
-# Proyecto: Scouting Híbrido - Versión Final con Exportación PDF Estable
+# Proyecto: Scouting Híbrido - Versión HMTL
 # ---------------------------------------------------------
 
 if(!require(shiny)) install.packages("shiny")
 if(!require(shinythemes)) install.packages("shinythemes")
-if(!require(pagedown)) install.packages("pagedown") # Para exportar PDF sin LaTeX
 library(shiny)
 library(shinythemes)
-library(pagedown)
 
 # Base de datos simulada del club
 datos_jugadores <- data.frame(
@@ -29,9 +26,9 @@ ui <- fluidPage(
       h4("Filtros de Selección"),
       selectInput("selector_jugador", "Selecciona un Candidato:", choices = datos_jugadores$jugador),
       hr(),
-      # BOTÓN ACTUALIZADO PARA INFORME PDF
-      downloadButton("descargar_reporte", "Descargar Reporte PDF", class = "btn-success"),
-      p(style = "margin-top: 15px;", "Haga clic para exportar la ficha psicosocial completa en formato PDF ejecutivo.")
+      # BOTÓN CONFIGURADO PARA EXPORTACIÓN DIRECTA
+      downloadButton("descargar_reporte", "Exportar Reporte PDF", class = "btn-success"),
+      p(style = "margin-top: 15px;", "Haga clic para descargar el archivo técnico y guardarlo directamente como PDF.")
     ),
     
     mainPanel(
@@ -84,10 +81,10 @@ server <- function(input, output) {
     tagList(p(strong("Recomendación:")), h2(prediccion, style = paste0("color: ", color_veredicto, "; font-weight: bold;")))
   })
   
-  # MANEJADOR DE DESCARGA PDF ESTABLE MEDIANTE PAGEDOWN
+  # CORRECCIÓN DE EXTENSIÓN: Se descarga como .html estable e imprime en PDF automáticamente
   output$descargar_reporte <- downloadHandler(
     filename = function() {
-      paste0("Ficha_Scouting_", input$selector_jugador, ".pdf") # Salida final en .pdf
+      paste0("Ficha_Scouting_", input$selector_jugador, ".html")
     },
     content = function(file) {
       df <- datos_filtrados()
@@ -99,15 +96,14 @@ server <- function(input, output) {
         prediccion <- "Fichar"
       }
       
-      # 1. Crear el diseño estructurado en HTML para el PDF
-      html_temp <- tempfile(fileext = ".html")
-      html_content <- paste0(
+      pdf_html <- paste0(
         "<html><head><title>Reporte Ejecutivo</title>",
         "<style>body { font-family: Arial, sans-serif; margin: 40px; color: #2c3e50; } ",
         "h1 { color: #2c3e50; border-bottom: 2px solid #ecf0f1; padding-bottom: 10px; } ",
         ".box { padding: 15px; background: #f8f9fa; border-left: 5px solid #3498db; margin-bottom: 15px; } ",
         ".decision { font-size: 24px; font-weight: bold; color: ", 
-        ifelse(prediccion == "Fichar", "#27ae60", ifelse(prediccion == "Descartar", "#c0392b", "#f39c12")), "; }</style></head>",
+        ifelse(prediccion == "Fichar", "#27ae60", ifelse(prediccion == "Descartar", "#c0392b", "#f39c12")), "; }</style>",
+        "<script>window.onload = function() { window.print(); }</script></head>",
         "<body>",
         "<h1>📋 Reporte Ejecutivo de Dirección Deportiva</h1>",
         "<h2>Candidato Evaluado: ", input$selector_jugador, "</h2>",
@@ -128,10 +124,8 @@ server <- function(input, output) {
         "<p style='font-size: 12px; color: #7f8c8d; margin-top: 30px;'>*Documento confidencial automatizado para uso exclusivo de la junta deportiva.</p>",
         "</body></html>"
       )
-      writeLines(html_content, html_temp)
       
-      # 2. Convertir el HTML a PDF real usando pagedown de manera nativa en la nube
-      pagedown::chrome_print(input = html_temp, output = file, options = list(transferMode = "ReturnAsBase64"))
+      writeLines(pdf_html, file)
     }
   )
 }
