@@ -4,10 +4,8 @@
 
 if(!require(shiny)) install.packages("shiny")
 if(!require(shinythemes)) install.packages("shinythemes")
-if(!require(rmarkdown)) install.packages("rmarkdown")
 library(shiny)
 library(shinythemes)
-library(rmarkdown)
 
 # Base de datos simulada del club
 datos_jugadores <- data.frame(
@@ -28,8 +26,7 @@ ui <- fluidPage(
       h4("Filtros de Selección"),
       selectInput("selector_jugador", "Selecciona un Candidato:", choices = datos_jugadores$jugador),
       hr(),
-      downloadButton("descargar_reporte", "Generar Informe Digital", class = "btn-success"),
-      p(style = "margin-top: 15px;", "Haga clic para exportar la ficha psicosocial completa en formato HTML.")
+      p("Utilice el selector para evaluar de forma interactiva el perfil de cada jugador en tiempo real.")
     ),
     
     mainPanel(
@@ -71,7 +68,7 @@ server <- function(input, output) {
   output$metrica_decision <- renderUI({
     df <- datos_filtrados()
     
-    # Reglas lógicas lógicas directas del Árbol de Decisión simulado
+    # Reglas lógicas del Árbol de Decisión
     prediccion <- "Monitorear"
     if (df$resiliencia_score < 40 || df$riesgo_desarraigo == "Alto") {
       prediccion <- "Descartar"
@@ -82,32 +79,6 @@ server <- function(input, output) {
     color_veredicto <- switch(prediccion, "Fichar" = "#27ae60", "Monitorear" = "#f39c12", "Descartar" = "#c0392b")
     tagList(p(strong("Recomendación:")), h2(prediccion, style = paste0("color: ", color_veredicto, "; font-weight: bold;")))
   })
-  
-  output$descargar_reporte <- downloadHandler(
-    filename = function() { paste0("Reporte_Scouting_", input$selector_jugador, ".html") },
-    content = function(file) {
-      df <- datos_filtrados()
-      
-      prediccion <- "Monitorear"
-      if (df$resiliencia_score < 40 || df$riesgo_desarraigo == "Alto") {
-        prediccion <- "Descartar"
-      } else if (df$resiliencia_score >= 80 && df$goles_poisson > 0.10) {
-        prediccion <- "Fichar"
-      }
-      
-      params <- list(
-        jugador = input$selector_jugador,
-        poisson = paste0(df$goles_poisson * 100, "%"),
-        pases = df$pases_normalizados,
-        resiliencia = df$resiliencia_score,
-        desarraigo = df$riesgo_desarraigo,
-        veredicto = prediccion
-      )
-      
-      rmarkdown::render("plantilla_reporte.Rmd", output_file = file,
-                        params = params, envir = new.env(parent = globalenv()))
-    }
-  )
 }
 
 shinyApp(ui = ui, server = server)
