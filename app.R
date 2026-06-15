@@ -1,5 +1,5 @@
 # ---------------------------------------------------------
-# Proyecto: Scouting Híbrido - Versión HMTL
+# Proyecto: Scouting Híbrido - Versión HMTL Imprimible
 # ---------------------------------------------------------
 
 if(!require(shiny)) install.packages("shiny")
