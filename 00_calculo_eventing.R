@@ -8,6 +8,8 @@ if(!require(dplyr)) install.packages("dplyr")
 library(dplyr)
 
 # 2. Dataset crudo con el historial de rendimiento de los jugadores (Recuerda que en "data.frame" ingresas tu archivo previamente cargado
+# 2.1 Tengamos en cuenta que estos datos han de haber sido ya limpiados y transformados por el analista, aqui, lo unico que hacemos es trabajarlos
+# mediante las distribuciones para obtener sus probabilidaes, los estan *90 minutos
 datos_crudos_scouting <- data.frame(
   jugador = c("Delantero A", "Mediocentro B", "Extremo C", "Central D", "Interior E"),
   promedio_goles_90min = c(0.55, 0.10, 0.40, 0.05, 0.20), # Usado como lambda para Poisson
