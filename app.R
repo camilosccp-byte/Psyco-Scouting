@@ -1,19 +1,23 @@
 # ---------------------------------------------------------
-# Proyecto: Scouting Híbrido - Versión HMTL Imprimible
+# Proyecto: Scouting Híbrido - Versión HTML Imprimible + Alimentación Dinámica
 # ---------------------------------------------------------
 
 if(!require(shiny)) install.packages("shiny")
 if(!require(shinythemes)) install.packages("shinythemes")
+if(!require(readxl)) install.packages("readxl") # 👈 NUEVA: Requerida para leer archivos de Excel
+
 library(shiny)
 library(shinythemes)
+library(readxl)
 
-# Base de datos simulada del club
-datos_jugadores <- data.frame(
+# Base de datos simulada del club (Actúa como la base inicial)
+datos_jugadores_base <- data.frame(
   jugador           = c("Delantero A", "Mediocentro B", "Extremo C", "Central D", "Interior E"),
   goles_poisson     = c(0.42, 0.12, 0.35, 0.05, 0.18),
   pases_normalizados = c(22, 58, 31, 45, 40),
   resiliencia_score = c(85, 90, 30, 45, 70),
-  riesgo_desarraigo = c("Bajo", "Bajo", "Alto", "Alto", "Medio")
+  riesgo_desarraigo = c("Bajo", "Bajo", "Alto", "Alto", "Medio"),
+  stringsAsFactors  = FALSE
 )
 
 # INTERFAZ DE USUARIO (UI)
@@ -24,8 +28,18 @@ ui <- fluidPage(
   sidebarLayout(
     sidebarPanel(
       h4("Filtros de Selección"),
-      selectInput("selector_jugador", "Selecciona un Candidato:", choices = datos_jugadores$jugador),
+      # El menú desplegable ahora se inicializa vacío y el servidor lo llena dinámicamente
+      selectInput("selector_jugador", "Selecciona un Candidato:", choices = NULL),
       hr(),
+      
+      # 📥 NUEVA SECCIÓN: CARGA DE DATOS EXTERNOS
+      h4("Alimentar Base de Datos"),
+      fileInput("archivo_nuevo", "Subir nuevos prospectos (.csv, .xlsx)", 
+                accept = c(".csv", ".xlsx")),
+      actionButton("reentrenar", "Integrar y Actualizar Lista", 
+                   class = "btn-primary", icon = icon("refresh")),
+      hr(),
+      
       # BOTÓN CONFIGURADO PARA EXPORTACIÓN DIRECTA
       downloadButton("descargar_reporte", "Exportar Reporte PDF", class = "btn-success"),
       p(style = "margin-top: 15px;", "Haga clic para descargar el archivo técnico y guardarlo directamente como PDF.")
@@ -43,17 +57,86 @@ ui <- fluidPage(
 )
 
 # LÓGICA DEL SERVIDOR (SERVER)
-server <- function(input, output) {
+server <- function(input, output, session) { # 👈 Agregado 'session' para permitir actualizaciones dinámicas
   
+  # 1. Almacenamiento reactivo de la base de datos (permite modificaciones en vivo)
+  valores <- reactiveValues(data_total = datos_jugadores_base)
+  
+  # 2. Rellenar el desplegable por primera vez al iniciar la aplicación
+  observe({
+    updateSelectInput(session, "selector_jugador", choices = valores$data_total$jugador)
+  })
+  
+  # 3. Lógica de lectura reactiva para procesar el archivo subido
+  datos_subidos <- reactive({
+    req(input$archivo_nuevo)
+    ruta <- input$archivo_nuevo$datapath
+    extension <- tools::file_ext(input$archivo_nuevo$name)
+    
+    if (extension == "csv") {
+      df <- read.csv(ruta, stringsAsFactors = FALSE)
+    } else if (extension %in% c("xls", "xlsx")) {
+      df <- readxl::read_excel(ruta)
+    } else {
+      showNotification("Formato inválido. Sube un archivo .csv o .xlsx", type = "error")
+      return(NULL)
+    }
+    return(df)
+  })
+  
+  # 4. Validación estricta y fusión de datos al presionar el botón "Integrar"
+  observeEvent(input$reentrenar, {
+    req(datos_subidos())
+    nuevos_datos <- datos_subidos()
+    
+    # Columnas exactas que exige tu lógica del sistema para no romperse
+    columnas_requeridas <- c("jugador", "goles_poisson", "pases_normalizados", "resiliencia_score", "riesgo_desarraigo")
+    
+    # Verificar si falta alguna columna en el archivo del usuario
+    columnas_faltantes <- setdiff(columnas_requeridas, colnames(nuevos_datos))
+    
+    if (length(columnas_faltantes) > 0) {
+      # Muestra advertencia interactiva y detiene la fusión
+      showModal(modalDialog(
+        title = "⚠️ Estructura de archivo incorrecta",
+        paste("Al archivo le faltan las siguientes columnas obligatorias:", 
+              paste(columnas_faltantes, collapse = ", ")),
+        easyClose = TRUE,
+        footer = modalButton("Entendido")
+      ))
+      return() 
+    }
+    
+    # Extraer únicamente las columnas requeridas (ignora columnas basura adicionales)
+    nuevos_datos_limpios <- nuevos_datos[, columnas_requeridas]
+    
+    # Forzar conversión de tipos para evitar errores de combinación al hacer rbind
+    nuevos_datos_limpios$jugador <- as.character(nuevos_datos_limpios$jugador)
+    nuevos_datos_limpios$goles_poisson <- as.numeric(nuevos_datos_limpios$goles_poisson)
+    nuevos_datos_limpios$pases_normalizados <- as.numeric(nuevos_datos_limpios$pases_normalizados)
+    nuevos_datos_limpios$resiliencia_score <- as.numeric(nuevos_datos_limpios$resiliencia_score)
+    nuevos_datos_limpios$riesgo_desarraigo <- as.character(nuevos_datos_limpios$riesgo_desarraigo)
+    
+    # Fusionar la base de datos vieja con los registros nuevos
+    valores$data_total <- rbind(valores$data_total, nuevos_datos_limpios)
+    
+    # Actualizar dinámicamente el selector desplegable con la lista expandida
+    updateSelectInput(session, "selector_jugador", choices = valores$data_total$jugador)
+    
+    showNotification("¡Nuevos prospectos integrados con éxito!", type = "message")
+  })
+  
+  # 5. Filtrado de datos consumiendo el entorno reactivo expandible
   datos_filtrados <- reactive({
-    subset(datos_jugadores, jugador == input$selector_jugador)
+    subset(valores$data_total, jugador == input$selector_jugador)
   })
   
   output$metrica_futbol <- renderUI({
     df <- datos_filtrados()
+    req(nrow(df) > 0) # Asegura que haya datos seleccionados antes de renderizar
     tagList(
       p(strong("Probabilidad de Gol (Poisson):")),
-      h3(paste0(df$goles_poisson * 100, "%"), style = "color: #2c3e50; margin-bottom: 15px;"),
+      h3(paste0(round(df$goles_poisson * 100, 1), "%"), style = "color: #2c3e50; margin-bottom: 15px;"),
       p(strong("Pases Completados por Partido:")),
       h3(df$pases_normalizados, style = "color: #2c3e50;")
     )
@@ -61,6 +144,7 @@ server <- function(input, output) {
   
   output$metrica_psico <- renderUI({
     df <- datos_filtrados()
+    req(nrow(df) > 0)
     tagList(
       p(strong("Puntaje de Resiliencia:")), h4(paste0(df$resiliencia_score, " / 100")),
       p(strong("Riesgo de Desarraigo:")), h4(df$riesgo_desarraigo, style = ifelse(df$riesgo_desarraigo == "Alto", "color: red;", "color: green;"))
@@ -68,7 +152,8 @@ server <- function(input, output) {
   })
   
   output$metrica_decision <- renderUI({
-    df <- datos_filtrados()
+    df := datos_filtrados()
+    req(nrow(df) > 0)
     
     prediccion <- "Monitorear"
     if (df$resiliencia_score < 40 || df$riesgo_desarraigo == "Alto") {
@@ -81,7 +166,7 @@ server <- function(input, output) {
     tagList(p(strong("Recomendación:")), h2(prediccion, style = paste0("color: ", color_veredicto, "; font-weight: bold;")))
   })
   
-  # CORRECCIÓN DE EXTENSIÓN: Se descarga como .html estable e imprime en PDF automáticamente
+  # CORRECCIÓN DE EXTENSIÓN: Descarga en HTML e imprime de forma nativa
   output$descargar_reporte <- downloadHandler(
     filename = function() {
       paste0("Ficha_Scouting_", input$selector_jugador, ".html")
@@ -110,7 +195,7 @@ server <- function(input, output) {
         "<hr>",
         "<div class='box'>",
         "<h3>1. Métricas Técnicas de Cancha</h3>",
-        "<p><strong>Frecuencia de Gol (Poisson):</strong> ", df$goles_poisson * 100, "%</p>",
+        "<p><strong>Frecuencia de Gol (Poisson):</strong> ", round(df$goles_poisson * 100, 1), "%</p>",
         "<p><strong>Volumen de Juego (Pases Completados):</strong> ", df$pases_normalizados, " pases/90min</p>",
         "</div>",
         "<div class='box'>",
