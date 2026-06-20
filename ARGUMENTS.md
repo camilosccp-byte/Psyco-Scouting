@@ -18,7 +18,7 @@ Este repositorio propone un **enfoque híbrido disruptivo** por las siguientes r
 
 ## 📈 Tendencia de Mercado: Casos de Éxito en la Élite Mundial
 
-Aunque el fútbol profesional suele guardar sus metodologías bajo estricto secreto industrial, la analítica psicológica aplicada al scouting ha explotado formalmente en las ligas top de Europa. Este repositorio replica, de una forma aproximada, la estructura de trabajo de los siguientes clubes:
+Aunque el fútbol profesional suele guardar sus metodologías bajo estricto secreto industrial, la analítica psicológica aplicada al scouting ha explotado formalmente en las ligas top de Europa. Este repositorio, tiene como objetivo, trabajar en esa misma vía y darle una apertura a analistas y clubes, nuevo en el campo; con ello mostramos un poco la estructura de trabajo de los siguientes clubes:
 
 * **Brighton & Hove Albion FC (Inglaterra):** Líder mundial en scouting de datos. Utilizan modelos de Inteligencia Artificial Psicológica para cuantificar rasgos como control emocional, frustración y adaptación cultural analizando micro-conductas antes de comprar un jugador.
 * **Bayern Múnich (Alemania):** Implementó bajo su dirección técnica plataformas de análisis cognitivo que cruzan el lenguaje corporal y el comportamiento bajo presión con el volumen de juego del futbolista, resumiéndolo en reportes predictivos automatizados de una sola página.
@@ -40,4 +40,4 @@ Para sustentar formalmente este proyecto en entregas académicas, defensas técn
    * **Aporte:** Documentación histórica sobre los primeros modelos estadísticos de mapeo cognitivo aplicados al reclutamiento deportivo masivo en ligas de primer nivel europeo.
 
 ---
-*Este proyecto demuestra que la psicología deportiva ya no es un factor intangible, sino una variable matemática predictiva fundamental para la toma de decisiones en la alta competencia.*
+*Este proyecto demuestra que la psicología deportiva ya no es un factor intangible, sino una variable matemática predictiva fundamental para la toma de decisiones en la alta competencia (aplicado a Scouting).*
