@@ -152,7 +152,7 @@ server <- function(input, output, session) { # 👈 Agregado 'session' para perm
   })
   
   output$metrica_decision <- renderUI({
-    df := datos_filtrados()
+    df <- datos_filtrados()
     req(nrow(df) > 0)
     
     prediccion <- "Monitorear"
