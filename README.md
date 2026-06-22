@@ -10,7 +10,7 @@ A diferencia de los modelos tradicionales de la industria que se limitan a anali
 
 El modelo cuenta con una aplicación web completamente funcional desplegada en la nube para uso de la junta directiva y el cuerpo técnico. 
 
-👉 **[Acceder al Panel de Scouting en Vivo](https://mi-analisis-premier.shinyapps.io/scouting_app/)** El analista que use el respositorio, debe buscar su usuario personal o del club, en ShinyApp
+👉 **[Acceder al Panel de Scouting en Vivo]( https://psyco-scouting-app.shinyapps.io/scouting_app/)** El analista que use el respositorio, debe buscar su usuario personal o del club, en ShinyApp
 
 ### Características del Panel Ejecutivo:
 - **Simulación Reactiva:** Permite seleccionar candidatos del menú y recalcular instantáneamente sus indicadores técnicos y humanos.
