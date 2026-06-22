@@ -47,7 +47,9 @@ El flujo del proyecto está desacoplado en módulos estratégicos:
 - **`01_imputacion_datos.R`:** Módulo de Inteligencia Artificial que soluciona el problema de los perfiles psicológicos vacíos en ligas lejanas mediante **Imputación por Bosques Aleatorios (`mice`)**, prediciendo variables conductuales con base en gemelos estadísticos en la cancha.
 - **`02_arbol_decision.R`:** Árbol de clasificación lógica que procesa el pipeline completo y emite la recomendación definitiva del sistema: *Fichar, Monitorear o Descartar*.
 - **`app.R`:** Código fuente de la interfaz gráfica y servidor web en **R Shiny** con motor de alimentación de datos en vivo y renderizado de reportes ejecutivos.
-- **`ARGUMENTS.md`:** Documento de fundamentación teórica que reúne el marco conceptual de la analítica conductual y la **bibliografía científica/periodística** de los clubes de élite europea, que permiten validar metodológicamente este proyecto.
+
+*   `ARGUMENTS.md` : Documento de fundamentación teórica que reúne el marco conceptual de la analítica conductual y el porqué de las variables seleccionadas, sirviendo de soporte para validar metodológicamente este proyecto.
+*   `MEJORAS_FUTURAS.md` : Documento que detalla la hoja de ruta (*roadmap*) y las próximas optimizaciones del algoritmo. ¡Te invitamos a leerlo para conocer la evolución del proyecto!
 
 ---
 
