@@ -20,6 +20,10 @@ El modelo cuenta con una aplicación web completamente funcional desplegada en l
 
 *Nota técnica:* Aunque la aplicación incluye una matriz base (`tibble`) de ejemplo para demostrar su funcionamiento en la prueba piloto, la suite está diseñada para ser alimentada a gran escala con los datasets y métricas específicas que el departamento de psicología deportiva y el cuerpo técnico del club decidan consensuar.
 
+*⚠️ Nota sobre la Carga de Datos:* Para que el motor de alimentación en vivo integre tus archivos externos con éxito, tu documento (`.csv` o `.xlsx`) debe contener obligatoriamente las siguientes columnas en su primera fila (respetando minúsculas y guiones bajos): `jugador`, `goles_poisson`, `pases_normalizados`, `resiliencia_score` y `riesgo_desarraigo`. El sistema validará su formato automáticamente antes de refrescar el panel.
+👉 **[Descargar Plantilla de Excel de Prueba (Click Aquí)](https://github.com)**
+
+
 ---
 
 ## 🚀 Innovación Metodológica: Variables Analizadas
